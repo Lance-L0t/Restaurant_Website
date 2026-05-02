@@ -208,7 +208,7 @@ h1 span {
   letter-spacing: 2px;
 
 }
-.heading{
+.heading-title{
     font-family: var(--font-heading);
   color: var(--color-orange-vibrant);
   font-size: 3rem;
@@ -468,7 +468,7 @@ h1 span {
 .dish:hover .ingredient-card{
   transform: rotatey(0deg);
   opacity: 1;
-  border: 2px dashed var(--color-dark-soft);
+  border: 2px dashed var(--color-orange-warm);
 }
 .dish:hover .dish-info{
   transform: rotateY(180deg);
@@ -512,7 +512,7 @@ h1 span {
   left: 0;
   width: 300px;
   height: 500px;
-  background-color: beige;
+  background-color: var(--color-beige);
   border-radius: var(--radius-md);
   transition: .4s ease-in-out;
 }
