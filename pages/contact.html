@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reservations | Los Pollos Hermanos</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="../style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -41,9 +41,9 @@
     <nav>
       <h2>Los Pollos</h2>
       <ul>
-        <li><a href="index.html">Home</a></li>
+        <li><a href="../index.html">Home</a></li>
         <li><a href="story.html">Our Story</a></li>
-        <li><a href="index.html#menu">Menu</a></li>
+        <li><a href="../index.html#menu">Menu</a></li>
         <li><a href="shop.html">Shop</a></li>
         <li><a href="contact.html">Reservations</a></li>
       </ul>
@@ -51,7 +51,10 @@
         <button class="theme-toggle" id="theme-toggle">
           <i class="fa-solid fa-moon"></i>
         </button>
-        <button style="margin-left: 20px;" onclick="window.location.href='contact.html'">Contact</button>
+        <div class="nav-toggle" id="nav-toggle">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+        <button style="margin-left: 20px;" class="nav-reserve-btn" onclick="window.location.href='contact.html'">Contact</button>
       </div>
     </nav>
 
@@ -87,7 +90,7 @@
         </form>
       </div>
       <div class="featured-image" style="height: 500px;">
-        <img src="assets/jack-pierce-_RfuVB5U7gA-unsplash.jpg" alt="Dining Room">
+        <img src="../assets/jack-pierce-_RfuVB5U7gA-unsplash.jpg" alt="Dining Room">
         <div style="padding: 30px; background: var(--color-bg-alt); margin-top: 20px; border-radius: var(--radius-md);">
             <h4 style="color: var(--color-ember);">Find Us</h4>
             <p style="margin-top: 10px;">123 Ember Lane, Fire District</p>
@@ -106,9 +109,9 @@
       <div class="footer-links">
         <h4>Explore</h4>
         <ul>
-          <li><a href="index.html">Home</a></li>
+          <li><a href="../index.html">Home</a></li>
           <li><a href="story.html">Our Story</a></li>
-          <li><a href="index.html#menu">Menu</a></li>
+          <li><a href="../index.html#menu">Menu</a></li>
           <li><a href="shop.html">Shop</a></li>
         </ul>
       </div>
@@ -126,7 +129,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollToPlugin.min.js"></script>
-  <script src="script.js"></script>
+  <script src="../script.js"></script>
 </body>
 
 </html>

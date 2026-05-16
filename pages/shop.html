@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Fire Shop | Los Pollos Hermanos</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="../style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -19,9 +19,9 @@
     <nav>
       <h2>Los Pollos</h2>
       <ul>
-        <li><a href="index.html">Home</a></li>
+        <li><a href="../index.html">Home</a></li>
         <li><a href="story.html">Our Story</a></li>
-        <li><a href="index.html#menu">Menu</a></li>
+        <li><a href="../index.html#menu">Menu</a></li>
         <li><a href="shop.html">Shop</a></li>
         <li><a href="contact.html">Reservations</a></li>
       </ul>
@@ -29,7 +29,10 @@
         <button class="theme-toggle" id="theme-toggle">
           <i class="fa-solid fa-moon"></i>
         </button>
-        <button style="margin-left: 20px;" onclick="window.location.href='contact.html'">Contact</button>
+        <div class="nav-toggle" id="nav-toggle">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+        <button style="margin-left: 20px;" class="nav-reserve-btn" onclick="window.location.href='contact.html'">Contact</button>
       </div>
     </nav>
 
@@ -44,7 +47,7 @@
       <div class="menu">
         <div class="dish">
           <div class="dish-info">
-            <div class="image" style="background-image: url('assets/irene-kredenets-tVs-nga-tpo-unsplash.jpg');"></div>
+            <div class="image" style="background-image: url('../assets/irene-kredenets-tVs-nga-tpo-unsplash.jpg');"></div>
             <div class="info">
               <h4>Orange-Chile Rub</h4>
               <h5>$12</h5>
@@ -59,7 +62,7 @@
 
         <div class="dish">
           <div class="dish-info">
-            <div class="image" style="background-image: url('assets/luisana-zerpa-MJPr6nOdppw-unsplash.jpg');"></div>
+            <div class="image" style="background-image: url('../assets/luisana-zerpa-MJPr6nOdppw-unsplash.jpg');"></div>
             <div class="info">
               <h4>"The Flame" Apron</h4>
               <h5>$35</h5>
@@ -74,7 +77,7 @@
 
         <div class="dish">
           <div class="dish-info">
-            <div class="image" style="background-image: url('assets/victoria-shes-UC0HZdUitWY-unsplash.jpg');"></div>
+            <div class="image" style="background-image: url('../assets/victoria-shes-UC0HZdUitWY-unsplash.jpg');"></div>
             <div class="info">
               <h4>Citrus Glaze Set</h4>
               <h5>$24</h5>
@@ -89,7 +92,7 @@
 
         <div class="dish">
           <div class="dish-info">
-            <div class="image" style="background-image: url('assets/chad-montano-MqT0asuoIcU-unsplash.jpg');"></div>
+            <div class="image" style="background-image: url('../assets/chad-montano-MqT0asuoIcU-unsplash.jpg');"></div>
             <div class="info">
               <h4>Pitmaster's Kit</h4>
               <h5>$85</h5>
@@ -112,9 +115,9 @@
       <div class="footer-links">
         <h4>Explore</h4>
         <ul>
-          <li><a href="index.html">Home</a></li>
+          <li><a href="../index.html">Home</a></li>
           <li><a href="story.html">Our Story</a></li>
-          <li><a href="index.html#menu">Menu</a></li>
+          <li><a href="../index.html#menu">Menu</a></li>
           <li><a href="shop.html">Shop</a></li>
         </ul>
       </div>
@@ -132,7 +135,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollToPlugin.min.js"></script>
-  <script src="script.js"></script>
+  <script src="../script.js"></script>
 </body>
 
 </html>

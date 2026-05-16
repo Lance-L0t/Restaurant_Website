@@ -93,10 +93,43 @@ gsap.utils.toArray(".dish").forEach((dish) => {
   });
 });
 
+// Mobile Menu Toggle
+const navToggle = document.getElementById("nav-toggle");
+const navMenu = document.querySelector("nav ul");
+
+if (navToggle) {
+  navToggle.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+    const icon = navToggle.querySelector("i");
+    if (navMenu.classList.contains("active")) {
+      icon.classList.replace("fa-bars", "fa-xmark");
+      gsap.from("nav ul li", {
+        opacity: 0,
+        y: 20,
+        stagger: 0.1,
+        duration: 0.5,
+        ease: "power2.out"
+      });
+    } else {
+      icon.classList.replace("fa-xmark", "fa-bars");
+    }
+  });
+}
+
+// Close menu when clicking a link
+document.querySelectorAll("nav ul li a").forEach(link => {
+  link.addEventListener("click", () => {
+    navMenu.classList.remove("active");
+    const icon = navToggle.querySelector("i");
+    if (icon) icon.classList.replace("fa-xmark", "fa-bars");
+  });
+});
+
 // Active Navigation Link
 const currentPath = window.location.pathname.split("/").pop() || "index.html";
 document.querySelectorAll("nav ul li a").forEach(link => {
-  if (link.getAttribute("href") === currentPath) {
+  const linkHref = link.getAttribute("href").split("/").pop();
+  if (linkHref === currentPath) {
     link.style.color = "var(--color-ember)";
     link.style.borderBottom = "2px solid var(--color-ember)";
     link.style.paddingBottom = "5px";

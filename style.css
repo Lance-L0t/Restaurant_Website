@@ -559,21 +559,70 @@ footer {
   margin-bottom: 30px;
 }
 
-/* Responsive */
+/* Navigation Mobile */
+.nav-toggle {
+  display: none;
+}
+
+/* Responsive Styles */
 @media (max-width: 1024px) {
-  header, nav, .about, .menu-container, footer, .gallery, .featured { padding-left: 40px; padding-right: 40px; }
+  header, nav, .about, .menu-container, footer, .gallery, .featured {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
   .text h1 { font-size: 3.5rem; }
-  .featured { flex-direction: column; gap: 40px; }
+  .featured { flex-direction: column; gap: 40px; text-align: center; }
+  .featured-image { width: 100%; height: 400px; }
   footer { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 768px) {
-  header { flex-direction: column; text-align: center; justify-content: center; }
+  nav { padding: 15px 20px; }
+  nav ul {
+    display: none; /* Hide for now, will implement mobile menu in script */
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 70px);
+    background: var(--color-bg);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    z-index: 999;
+  }
+  nav ul.active {
+    display: flex;
+  }
+  .nav-toggle {
+    display: block;
+    font-size: 1.5rem;
+    color: var(--color-text);
+    cursor: pointer;
+  }
+  header { flex-direction: column; text-align: center; justify-content: center; padding-top: 120px; }
   .images { display: none; }
-  .text { margin-bottom: 50px; }
-  .heading-title { font-size: 2.5rem; }
-  .featured-content h2 { font-size: 2.5rem; }
+  .text { margin-bottom: 50px; transform: none !important; opacity: 1 !important; }
+  .text h1 { font-size: 2.8rem; }
+  .heading-title { font-size: 2.2rem; }
+  .featured-content h2 { font-size: 2.2rem; }
+  .menu { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; }
   footer { grid-template-columns: 1fr; text-align: center; }
   .footer-brand p { margin: 0 auto 30px; }
+  
+  /* Disable horizontal timeline scroll on mobile, stack cards instead */
+  .content { height: auto; overflow: visible; }
+  .mini-content aside { display: block; padding: 20px 0; }
+  .cards-container { flex-direction: column; gap: 30px; padding: 0; }
+  .card { width: 100%; min-width: 0; }
+  .timeline-line, .dot { display: none; }
+}
+
+@media (max-width: 480px) {
+    .gallery-grid { grid-template-columns: 1fr; }
+    .text h1 { font-size: 2.2rem; }
+    .heading-title { font-size: 1.8rem; }
 }
 
