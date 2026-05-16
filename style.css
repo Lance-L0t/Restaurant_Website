@@ -604,6 +604,10 @@ footer {
   display: none;
 }
 
+.mobile-only {
+  display: none;
+}
+
 /* Responsive Styles */
 @media (max-width: 1024px) {
   header, nav, .about, .menu-container, footer, .gallery, .featured {
@@ -618,41 +622,56 @@ footer {
 
 @media (max-width: 768px) {
   nav { padding: 15px 20px; }
+  
+  .nav-reserve-btn {
+    display: none; /* Hide standard button on mobile */
+  }
+
+  .mobile-only {
+    display: block; /* Show menu-integrated button */
+  }
+
   nav ul {
-    display: none; /* Hide for now, will implement mobile menu in script */
+    display: none;
     position: fixed;
-    top: 70px;
+    top: 0;
     left: 0;
     width: 100%;
-    height: calc(100vh - 70px);
+    height: 100vh;
     background: var(--color-bg);
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 40px;
+    gap: 30px;
     z-index: 999;
   }
+
   nav ul.active {
     display: flex;
   }
+
   .nav-toggle {
     display: block;
     font-size: 1.5rem;
     color: var(--color-text);
     cursor: pointer;
+    z-index: 1001; /* Above the menu */
+    margin-left: 15px;
   }
-  header { flex-direction: column; text-align: center; justify-content: center; padding-top: 120px; }
-  .images { display: none; }
-  .text { margin-bottom: 50px; transform: none !important; opacity: 1 !important; }
+
+  .theme-toggle {
+    z-index: 1001;
+    margin-left: 0;
+  }
+
+  header { padding-top: 100px; }
   .text h1 { font-size: 2.8rem; }
   .heading-title { font-size: 2.2rem; }
   .featured-content h2 { font-size: 2.2rem; }
   .menu { grid-template-columns: 1fr; }
   .gallery-grid { grid-template-columns: 1fr 1fr; }
   footer { grid-template-columns: 1fr; text-align: center; }
-  .footer-brand p { margin: 0 auto 30px; }
   
-  /* Disable horizontal timeline scroll on mobile, stack cards instead */
   .content { height: auto; overflow: visible; }
   .mini-content aside { display: block; padding: 20px 0; }
   .cards-container { flex-direction: column; gap: 30px; padding: 0; }
