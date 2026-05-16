@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reservations | Los Pollos Hermanos</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    input, textarea, select {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 20px;
+      background: var(--color-bg-alt);
+      border: 1px solid var(--color-glass-border);
+      color: var(--color-text);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-primary);
+    }
+    input:focus, textarea:focus {
+      border-color: var(--color-ember);
+      outline: none;
+    }
+    label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 600;
+        color: var(--color-ember);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main">
+    <nav>
+      <h2>Los Pollos</h2>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="story.html">Our Story</a></li>
+        <li><a href="index.html#menu">Menu</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="contact.html">Reservations</a></li>
+      </ul>
+      <div style="display: flex; align-items: center;">
+        <button class="theme-toggle" id="theme-toggle">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button style="margin-left: 20px;" onclick="window.location.href='contact.html'">Contact</button>
+      </div>
+    </nav>
+
+    <header style="min-height: 40vh; justify-content: center; text-align: center; flex-direction: column;">
+      <div class="text" style="opacity: 1; transform: none; max-width: 800px;">
+        <h1 style="font-size: 3.5rem;">Join the Hearth</h1>
+        <p style="color: var(--color-text-dim); font-size: 1.2rem; margin-top: 10px;">Reserve your table at the heart of the flame.</p>
+      </div>
+    </header>
+
+    <section class="featured" style="background-color: var(--color-bg); padding: 50px 70px;">
+      <div class="featured-content" style="max-width: 600px;">
+        <form>
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Your Name" required>
+            
+            <label for="date">Date</label>
+            <input type="date" id="date" required>
+            
+            <label for="guests">Number of Guests</label>
+            <select id="guests">
+                <option value="1">1 Person</option>
+                <option value="2">2 People</option>
+                <option value="3">3 People</option>
+                <option value="4">4 People</option>
+                <option value="5+">5+ People</option>
+            </select>
+            
+            <label for="message">Special Requests</label>
+            <textarea id="message" rows="4" placeholder="Allergies, celebrations..."></textarea>
+            
+            <button type="submit" style="width: 100%; background-color: var(--color-ember); color: white; padding: 15px; border: none; border-radius: var(--radius-sm); font-weight: 700;">Confirm Reservation</button>
+        </form>
+      </div>
+      <div class="featured-image" style="height: 500px;">
+        <img src="assets/jack-pierce-_RfuVB5U7gA-unsplash.jpg" alt="Dining Room">
+        <div style="padding: 30px; background: var(--color-bg-alt); margin-top: 20px; border-radius: var(--radius-md);">
+            <h4 style="color: var(--color-ember);">Find Us</h4>
+            <p style="margin-top: 10px;">123 Ember Lane, Fire District</p>
+            <p>New Mexico, USA</p>
+            <p style="margin-top: 10px;"><strong>Phone:</strong> (555) 123-FIRE</p>
+            <p><strong>Email:</strong> gus@lospollos.com</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-brand">
+        <h2>Los Pollos</h2>
+        <p>Crafting fire-roasted experiences since 2019. Where every flame tells a story and every spice ignites a memory.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="story.html">Our Story</a></li>
+          <li><a href="index.html#menu">Menu</a></li>
+          <li><a href="shop.html">Shop</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="#">Locations</a></li>
+        </ul>
+      </div>
+    </footer>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollToPlugin.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
