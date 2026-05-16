@@ -93,6 +93,22 @@ gsap.utils.toArray(".dish").forEach((dish) => {
   });
 });
 
+// Testimonials Entrance Animation
+gsap.utils.toArray(".testimonial-card").forEach((card) => {
+  gsap.from(card, {
+    scrollTrigger: {
+      trigger: card,
+      start: "top 90%",
+      toggleActions: "play none none none"
+    },
+    duration: 1,
+    opacity: 0,
+    y: 30,
+    scale: 0.95,
+    ease: "power2.out"
+  });
+});
+
 // Mobile Menu Toggle
 const navToggle = document.getElementById("nav-toggle");
 const navMenu = document.querySelector("nav ul");
