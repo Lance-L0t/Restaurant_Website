@@ -25,55 +25,65 @@ document.addEventListener("mousemove", (e) => {
   const mouseX = e.clientX / window.innerWidth - 0.5;
   const mouseY = e.clientY / window.innerHeight - 0.5;
 
-  gsap.to(".img1", {
-    duration: 1,
-    x: mouseX * 30,
-    y: mouseY * 30 - 20,
-    ease: "power2.out"
-  });
+  if (window.innerWidth > 1024) {
+    gsap.to(".img1", {
+      duration: 1,
+      x: mouseX * 30,
+      y: mouseY * 30 - 20,
+      ease: "power2.out"
+    });
 
-  gsap.to(".img2", {
-    duration: 1,
-    x: mouseX * -20,
-    y: mouseY * -20,
-    ease: "power2.out"
-  });
+    gsap.to(".img2", {
+      duration: 1,
+      x: mouseX * -20,
+      y: mouseY * -20,
+      ease: "power2.out"
+    });
 
-  gsap.to(".img3", {
-    duration: 1,
-    x: mouseX * 15,
-    y: mouseY * 15,
-    ease: "power2.out"
-  });
+    gsap.to(".img3", {
+      duration: 1,
+      x: mouseX * 15,
+      y: mouseY * 15,
+      ease: "power2.out"
+    });
+  }
 });
 
-// Timeline Scroll Animation
+// Timeline Scroll Animation with MatchMedia
 const timelineSection = document.querySelector(".about");
 const timelineContent = document.querySelector(".content");
 
 if (timelineSection && timelineContent) {
-  gsap.to(".cards-container", {
-    x: () => -(timelineContent.scrollWidth - window.innerWidth + 140),
-    ease: "none",
-    scrollTrigger: {
-      trigger: ".about",
-      start: "top top",
-      end: () => "+=" + timelineContent.scrollWidth,
-      scrub: 1,
-      pin: true,
-      anticipatePin: 1,
-      invalidateOnRefresh: true
-    }
-  });
+  ScrollTrigger.matchMedia({
+    // Desktop: Horizontal Scroll
+    "(min-width: 769px)": function() {
+      gsap.to(".cards-container", {
+        x: () => -(timelineContent.scrollWidth - window.innerWidth + 140),
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".about",
+          start: "top top",
+          end: () => "+=" + timelineContent.scrollWidth,
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true
+        }
+      });
 
-  // Animate dots and line opacity as we scroll
-  gsap.to(".timeline-line", {
-    opacity: 1,
-    scrollTrigger: {
-      trigger: ".about",
-      start: "top center",
-      end: "bottom center",
-      scrub: true
+      gsap.to(".timeline-line", {
+        opacity: 1,
+        scrollTrigger: {
+          trigger: ".about",
+          start: "top center",
+          end: "bottom center",
+          scrub: true
+        }
+      });
+    },
+    // Mobile: Standard Vertical Layout (Already handled in CSS)
+    "(max-width: 768px)": function() {
+      // No horizontal scroll needed on mobile
     }
   });
 }
@@ -121,9 +131,9 @@ if (navToggle) {
       icon.classList.replace("fa-bars", "fa-xmark");
       gsap.from("nav ul li", {
         opacity: 0,
-        y: 20,
+        x: 50,
         stagger: 0.1,
-        duration: 0.5,
+        duration: 0.4,
         ease: "power2.out"
       });
     } else {
@@ -144,38 +154,42 @@ document.querySelectorAll("nav ul li a").forEach(link => {
 // Active Navigation Link
 const currentPath = window.location.pathname.split("/").pop() || "index.html";
 document.querySelectorAll("nav ul li a").forEach(link => {
-  const linkHref = link.getAttribute("href").split("/").pop();
+  const linkHref = link.getAttribute("href")?.split("/").pop();
   if (linkHref === currentPath) {
     link.style.color = "var(--color-ember)";
-    link.style.borderBottom = "2px solid var(--color-ember)";
-    link.style.paddingBottom = "5px";
+    if (window.innerWidth > 768) {
+      link.style.borderBottom = "2px solid var(--color-ember)";
+      link.style.paddingBottom = "5px";
+    }
   }
 });
 
 // Theme Toggle Logic
 const themeToggle = document.getElementById("theme-toggle");
-const body = document.body;
-const icon = themeToggle.querySelector("i");
+if (themeToggle) {
+    const body = document.body;
+    const icon = themeToggle.querySelector("i");
 
-// Check for saved theme
-const savedTheme = localStorage.getItem("theme");
-if (savedTheme === "light") {
-  body.classList.add("light-theme");
-  icon.classList.replace("fa-moon", "fa-sun");
+    // Check for saved theme
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light") {
+      body.classList.add("light-theme");
+      icon.classList.replace("fa-moon", "fa-sun");
+    }
+
+    themeToggle.addEventListener("click", () => {
+      body.classList.toggle("light-theme");
+      const isLight = body.classList.contains("light-theme");
+      
+      if (isLight) {
+        icon.classList.replace("fa-moon", "fa-sun");
+        localStorage.setItem("theme", "light");
+      } else {
+        icon.classList.replace("fa-sun", "fa-moon");
+        localStorage.setItem("theme", "dark");
+      }
+    });
 }
-
-themeToggle.addEventListener("click", () => {
-  body.classList.toggle("light-theme");
-  const isLight = body.classList.contains("light-theme");
-  
-  if (isLight) {
-    icon.classList.replace("fa-moon", "fa-sun");
-    localStorage.setItem("theme", "light");
-  } else {
-    icon.classList.replace("fa-sun", "fa-moon");
-    localStorage.setItem("theme", "dark");
-  }
-});
 
 // Gallery Scroll Animations
 gsap.utils.toArray(".gallery-item").forEach((item) => {
@@ -194,16 +208,18 @@ gsap.utils.toArray(".gallery-item").forEach((item) => {
 });
 
 // Featured Image Parallax
-gsap.to(".featured-image img", {
-  y: -50,
-  ease: "none",
-  scrollTrigger: {
-    trigger: ".featured",
-    start: "top bottom",
-    end: "bottom top",
-    scrub: true
-  }
-});
+if (document.querySelector(".featured-image img")) {
+    gsap.to(".featured-image img", {
+      y: -50,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".featured",
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true
+      }
+    });
+}
 
 // Smooth Scroll for Navigation Links
 document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
