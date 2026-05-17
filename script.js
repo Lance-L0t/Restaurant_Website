@@ -1,125 +1,212 @@
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-// Hero Entrance Animation
+// ===== HERO SECTION - FIXED (no disappearing) =====
+window.addEventListener("DOMContentLoaded", () => {
+  // Set initial states for animation
+  gsap.set(".text", { opacity: 0, y: 30 });
+  gsap.set(".advert", { opacity: 0, scale: 0.8 });
+});
+
 window.addEventListener("load", () => {
+  // Run animation WITHOUT clearProps to prevent disappearing
   const tl = gsap.timeline();
-
+  
   tl.to(".text", {
-    duration: 1.5,
+    duration: 1.2,
     opacity: 1,
     y: 0,
-    ease: "power4.out",
-    delay: 0.5
+    ease: "power4.out"
   })
-  .from(".advert", {
-    duration: 1.2,
-    opacity: 0,
-    scale: 0.8,
-    stagger: 0.2,
-    ease: "back.out(1.7)"
-  }, "-=1");
+  .to(".advert", {
+    duration: 0.8,
+    opacity: 1,
+    scale: 1,
+    stagger: 0.15,
+    ease: "back.out(1.2)"
+  }, "-=0.5");
+  
+  // NO clearProps - let GSAP keep the final values naturally
 });
 
-// Parallax Hero Images
-document.addEventListener("mousemove", (e) => {
-  const mouseX = e.clientX / window.innerWidth - 0.5;
-  const mouseY = e.clientY / window.innerHeight - 0.5;
-
-  if (window.innerWidth > 1024) {
-    gsap.to(".img1", {
-      duration: 1,
-      x: mouseX * 30,
-      y: mouseY * 30 - 20,
-      ease: "power2.out"
-    });
-
-    gsap.to(".img2", {
-      duration: 1,
-      x: mouseX * -20,
-      y: mouseY * -20,
-      ease: "power2.out"
-    });
-
-    gsap.to(".img3", {
-      duration: 1,
-      x: mouseX * 15,
-      y: mouseY * 15,
-      ease: "power2.out"
-    });
+// Safety fallback - ensure everything stays visible
+setTimeout(() => {
+  const text = document.querySelector(".text");
+  const adverts = document.querySelectorAll(".advert");
+  
+  if (text && getComputedStyle(text).opacity === "0") {
+    text.style.opacity = "1";
+    text.style.transform = "translateY(0)";
   }
+  
+  adverts.forEach(advert => {
+    if (getComputedStyle(advert).opacity === "0") {
+      advert.style.opacity = "1";
+      advert.style.transform = "scale(1)";
+    }
+  });
+}, 2000);
+
+// ===== PARALLAX (optimized) =====
+let parallaxTimeout;
+document.addEventListener("mousemove", (e) => {
+  if (window.innerWidth <= 1024) return;
+  if (parallaxTimeout) return;
+  
+  parallaxTimeout = setTimeout(() => {
+    const mouseX = e.clientX / window.innerWidth - 0.5;
+    const mouseY = e.clientY / window.innerHeight - 0.5;
+    
+    gsap.to(".img1", {
+      duration: 0.6,
+      x: mouseX * 25,
+      y: mouseY * 25 - 20,
+      ease: "power2.out",
+      overwrite: true
+    });
+    gsap.to(".img2", {
+      duration: 0.6,
+      x: mouseX * -15,
+      y: mouseY * -15,
+      ease: "power2.out",
+      overwrite: true
+    });
+    gsap.to(".img3", {
+      duration: 0.6,
+      x: mouseX * 10,
+      y: mouseY * 10,
+      ease: "power2.out",
+      overwrite: true
+    });
+    parallaxTimeout = null;
+  }, 16);
 });
 
-// Timeline Scroll Animation with MatchMedia
-const timelineSection = document.querySelector(".about");
-const timelineContent = document.querySelector(".content");
-
-if (timelineSection && timelineContent) {
-  ScrollTrigger.matchMedia({
-    // Desktop: Horizontal Scroll
-    "(min-width: 769px)": function() {
-      gsap.to(".cards-container", {
-        x: () => -(timelineContent.scrollWidth - window.innerWidth + 140),
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".about",
-          start: "top top",
-          end: () => "+=" + timelineContent.scrollWidth,
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true
-        }
-      });
-
-      gsap.to(".timeline-line", {
-        opacity: 1,
-        scrollTrigger: {
-          trigger: ".about",
-          start: "top center",
-          end: "bottom center",
-          scrub: true
-        }
-      });
-    },
-    // Mobile: Standard Vertical Layout (Already handled in CSS)
-    "(max-width: 768px)": function() {
-      // No horizontal scroll needed on mobile
+// ===== FIXED: TIMELINE HORIZONTAL SCROLL (NO GLITCHING) =====
+function initTimeline() {
+  // Kill any existing ScrollTriggers for about section
+  ScrollTrigger.getAll().forEach(st => {
+    if (st.vars.trigger === ".about" || st.trigger === document.querySelector(".about")) {
+      st.kill();
+    }
+  });
+  
+  // Reset position
+  gsap.set(".cards-container", { x: 0 });
+  
+  // Check if mobile
+  if (window.innerWidth <= 768) {
+    return;
+  }
+  
+  const aboutSection = document.querySelector(".about");
+  const cardsContainer = document.querySelector(".cards-container");
+  
+  if (!aboutSection || !cardsContainer) return;
+  
+  // Calculate scroll distance
+  const containerWidth = cardsContainer.scrollWidth;
+  const viewportWidth = window.innerWidth;
+  const scrollDistance = Math.max(0, containerWidth - viewportWidth + 140);
+  
+  if (scrollDistance <= 0) return;
+  
+  // Create the horizontal scroll WITHOUT pin to avoid glitching
+  gsap.to(".cards-container", {
+    x: -scrollDistance,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".about",
+      start: "top 20%",
+      end: () => `+=${scrollDistance * 0.6}`,
+      scrub: 1,
+      invalidateOnRefresh: true
     }
   });
 }
 
-// Menu Entrance Animation
-gsap.utils.toArray(".dish").forEach((dish) => {
+// Initialize timeline on load and resize
+window.addEventListener("load", () => {
+  setTimeout(initTimeline, 100);
+});
+
+let resizeTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    ScrollTrigger.refresh();
+    initTimeline();
+  }, 250);
+});
+
+// ===== ALTERNATIVE: SIMPLE VERTICAL TIMELINE FOR MOBILE =====
+// This is handled by CSS, no JS needed
+
+// ===== ENTRANCE ANIMATIONS =====
+// Menu items
+gsap.utils.toArray(".dish").forEach((dish, i) => {
   gsap.from(dish, {
     scrollTrigger: {
       trigger: dish,
       start: "top 90%",
-      toggleActions: "play none none none"
+      toggleActions: "play none none reverse"
     },
-    duration: 1,
+    duration: 0.7,
     opacity: 0,
-    y: 50,
+    y: 40,
+    delay: i * 0.1,
     ease: "power3.out"
   });
 });
 
-// Testimonials Entrance Animation
-gsap.utils.toArray(".testimonial-card").forEach((card) => {
+// Testimonials
+gsap.utils.toArray(".testimonial-card").forEach((card, i) => {
   gsap.from(card, {
     scrollTrigger: {
       trigger: card,
       start: "top 90%",
-      toggleActions: "play none none none"
+      toggleActions: "play none none reverse"
     },
-    duration: 1,
+    duration: 0.7,
     opacity: 0,
     y: 30,
     scale: 0.95,
+    delay: i * 0.1,
     ease: "power2.out"
   });
 });
 
-// Mobile Menu Toggle
+// Gallery items
+gsap.utils.toArray(".gallery-item").forEach((item, i) => {
+  gsap.from(item, {
+    scrollTrigger: {
+      trigger: item,
+      start: "top 90%",
+      toggleActions: "play none none reverse"
+    },
+    duration: 0.7,
+    opacity: 0,
+    scale: 0.95,
+    y: 30,
+    delay: i * 0.05,
+    ease: "power2.out"
+  });
+});
+
+// Featured Image Parallax
+if (document.querySelector(".featured-image img")) {
+  gsap.to(".featured-image img", {
+    y: -60,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".featured",
+      start: "top bottom",
+      end: "bottom top",
+      scrub: 0.8
+    }
+  });
+}
+
+// ===== MOBILE MENU =====
 const navToggle = document.getElementById("nav-toggle");
 const navMenu = document.querySelector("nav ul");
 
@@ -132,26 +219,28 @@ if (navToggle) {
       gsap.from("nav ul li", {
         opacity: 0,
         x: 50,
-        stagger: 0.1,
-        duration: 0.4,
+        stagger: 0.08,
+        duration: 0.35,
         ease: "power2.out"
       });
+      document.body.style.overflow = "hidden";
     } else {
       icon.classList.replace("fa-xmark", "fa-bars");
+      document.body.style.overflow = "";
     }
   });
 }
 
-// Close menu when clicking a link
 document.querySelectorAll("nav ul li a").forEach(link => {
   link.addEventListener("click", () => {
-    navMenu.classList.remove("active");
-    const icon = navToggle.querySelector("i");
+    if (navMenu) navMenu.classList.remove("active");
+    const icon = navToggle?.querySelector("i");
     if (icon) icon.classList.replace("fa-xmark", "fa-bars");
+    document.body.style.overflow = "";
   });
 });
 
-// Active Navigation Link
+// ===== ACTIVE LINK =====
 const currentPath = window.location.pathname.split("/").pop() || "index.html";
 document.querySelectorAll("nav ul li a").forEach(link => {
   const linkHref = link.getAttribute("href")?.split("/").pop();
@@ -164,74 +253,69 @@ document.querySelectorAll("nav ul li a").forEach(link => {
   }
 });
 
-// Theme Toggle Logic
+// ===== THEME TOGGLE =====
 const themeToggle = document.getElementById("theme-toggle");
 if (themeToggle) {
-    const body = document.body;
-    const icon = themeToggle.querySelector("i");
-
-    // Check for saved theme
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "light") {
-      body.classList.add("light-theme");
+  const body = document.body;
+  const icon = themeToggle.querySelector("i");
+  
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "light") {
+    body.classList.add("light-theme");
+    icon.classList.replace("fa-moon", "fa-sun");
+  }
+  
+  themeToggle.addEventListener("click", () => {
+    body.classList.toggle("light-theme");
+    const isLight = body.classList.contains("light-theme");
+    
+    if (isLight) {
       icon.classList.replace("fa-moon", "fa-sun");
+      localStorage.setItem("theme", "light");
+    } else {
+      icon.classList.replace("fa-sun", "fa-moon");
+      localStorage.setItem("theme", "dark");
     }
-
-    themeToggle.addEventListener("click", () => {
-      body.classList.toggle("light-theme");
-      const isLight = body.classList.contains("light-theme");
-      
-      if (isLight) {
-        icon.classList.replace("fa-moon", "fa-sun");
-        localStorage.setItem("theme", "light");
-      } else {
-        icon.classList.replace("fa-sun", "fa-moon");
-        localStorage.setItem("theme", "dark");
-      }
-    });
-}
-
-// Gallery Scroll Animations
-gsap.utils.toArray(".gallery-item").forEach((item) => {
-  gsap.from(item, {
-    scrollTrigger: {
-      trigger: item,
-      start: "top 90%",
-      toggleActions: "play none none none"
-    },
-    duration: 1.2,
-    opacity: 0,
-    scale: 0.9,
-    y: 30,
-    ease: "power2.out"
   });
-});
-
-// Featured Image Parallax
-if (document.querySelector(".featured-image img")) {
-    gsap.to(".featured-image img", {
-      y: -50,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".featured",
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true
-      }
-    });
 }
 
-// Smooth Scroll for Navigation Links
-document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+// ===== SMOOTH SCROLL =====
+document.querySelectorAll('nav a[href^="#"], .featured-content button, .nav-reserve-btn').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
     e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
+    let targetId = this.getAttribute('href');
+    
+    if (!targetId || targetId === '#') {
+      if (this.classList.contains('nav-reserve-btn')) {
+        alert('Reservation demo');
+      } else if (this.textContent.includes('Order')) {
+        alert('Order coming soon');
+      }
+      return;
+    }
+    
+    const target = document.querySelector(targetId);
     if (target) {
+      const navHeight = document.querySelector('nav').offsetHeight;
+      const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+      
       gsap.to(window, {
-        duration: 1,
-        scrollTo: target,
+        duration: 0.9,
+        scrollTo: targetPosition,
         ease: "power3.inOut"
       });
     }
   });
+});
+
+// ===== CLEANUP =====
+window.addEventListener("beforeunload", () => {
+  ScrollTrigger.getAll().forEach(st => st.kill());
+});
+
+// Final refresh
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    ScrollTrigger.refresh();
+  }, 150);
 });

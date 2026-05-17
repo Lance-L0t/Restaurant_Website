@@ -180,7 +180,7 @@ header {
 }
 
 .img1 { height: 420px; width: 340px; background-image: url("https://images.unsplash.com/photo-1598103442097-8b74394b95c6?q=80&w=800&auto=format&fit=crop"); transform: translateY(-20px); }
-.img2 { width: 300px; height: 300px; background-image: url("https://images.unsplash.com/photo-1591814468924-cafb5d1232e1?q=80&w=800&auto=format&fit=crop"); }
+.img2 { width: 300px; height: 300px; background-image: url("https://plus.unsplash.com/premium_photo-1673580742890-4af144293960?q=80&w=464&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); }
 .img3 { width: 300px; height: 300px; background-image: url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop"); }
 
 .advert:hover {
@@ -222,7 +222,7 @@ header {
   user-select: none;
 }
 
-.content::-webkit-scrollbar { height: 4px; }
+.content::-webkit-scrollbar { height: 4px; display: none;}
 .content::-webkit-scrollbar-track { background: var(--color-bg); }
 .content::-webkit-scrollbar-thumb { background: var(--color-ember); border-radius: 10px; }
 
@@ -640,9 +640,7 @@ footer {
 }
 
 @media (max-width: 1024px) {
-    .second-images{
-    display: none;
-  }
+
   header, nav, .about, .menu-container, footer, .gallery, .featured, .testimonials {
     padding-left: 40px;
     padding-right: 40px;
@@ -741,8 +739,49 @@ footer {
     .text h1 { font-size: 2.5rem; }
     .heading-title { font-size: 2.2rem; }
     .advert { margin: 10px; }
-    .img1 { width: 280px; height: 350px; }
+    .img1 { width: 60%; height: 70% }
     .img2, .img3 { width: 140px; height: 140px; }
     .featured-image { height: 300px; }
 }
 
+
+/* Fix for disappearing images - ensure they stay visible */
+.advert {
+  opacity: 1 !important; /* Force visibility */
+  visibility: visible !important;
+  transform: scale(1) !important;
+}
+
+/* Initial state for animation - use JS to handle, not CSS */
+.hero-image-init {
+  opacity: 0;
+  transform: scale(0.8);
+}
+/* Add to your stylesheet - prevents glitching during scroll */
+.content {
+  will-change: transform;
+  overflow-x: auto;
+  scroll-behavior: auto; /* Override smooth for horizontal scroll */
+}
+
+.cards-container {
+  will-change: transform;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+/* Prevent pin-spacer from causing glitches */
+.pin-spacer {
+  margin-bottom: 0 !important;
+}
+
+/* Ensure smooth vertical scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 768px) {
+  .content {
+    overflow-x: visible;
+  }
+}
